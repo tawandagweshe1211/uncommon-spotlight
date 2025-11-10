@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { LogOut, Plus } from "lucide-react";
 import { StudentForm } from "@/components/admin/StudentForm";
 import { StudentTable } from "@/components/admin/StudentTable";
+import { SubmissionTable, type Submission } from "@/components/admin/SubmissionTable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export interface Student {
   id: string;
@@ -22,12 +24,14 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [students, setStudents] = useState<Student[]>([]);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     checkAdminAccess();
     fetchStudents();
+    fetchSubmissions();
   }, []);
 
   const checkAdminAccess = async () => {
@@ -74,6 +78,72 @@ const Admin = () => {
     } catch (error) {
       console.error("Error fetching students:", error);
       toast.error("Failed to load students");
+    }
+  };
+
+  const fetchSubmissions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("student_submissions")
+        .select("*")
+        .eq("submission_status", "pending")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setSubmissions(data || []);
+    } catch (error) {
+      console.error("Error fetching submissions:", error);
+      toast.error("Failed to load submissions");
+    }
+  };
+
+  const handleApprove = async (submission: Submission) => {
+    try {
+      const { error: insertError } = await supabase.from("students").insert([
+        {
+          name: submission.name,
+          specialization: submission.specialization,
+          status: submission.status,
+          description: submission.description,
+          portfolio_link: submission.portfolio_link,
+          profile_photo_url: submission.profile_photo_url,
+        },
+      ]);
+
+      if (insertError) throw insertError;
+
+      const { error: updateError } = await supabase
+        .from("student_submissions")
+        .update({ submission_status: "approved", reviewed_at: new Date().toISOString() })
+        .eq("id", submission.id);
+
+      if (updateError) throw updateError;
+
+      toast.success("Submission approved successfully");
+      fetchStudents();
+      fetchSubmissions();
+    } catch (error) {
+      console.error("Error approving submission:", error);
+      toast.error("Failed to approve submission");
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    if (!confirm("Are you sure you want to reject this submission?")) return;
+
+    try {
+      const { error } = await supabase
+        .from("student_submissions")
+        .update({ submission_status: "rejected", reviewed_at: new Date().toISOString() })
+        .eq("id", id);
+
+      if (error) throw error;
+
+      toast.success("Submission rejected");
+      fetchSubmissions();
+    } catch (error) {
+      console.error("Error rejecting submission:", error);
+      toast.error("Failed to reject submission");
     }
   };
 
@@ -143,34 +213,62 @@ const Admin = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">Manage Students</h2>
-            <p className="text-sm text-muted-foreground">
-              Add, edit, or remove student profiles
-            </p>
-          </div>
-          {!showForm && (
-            <Button onClick={() => setShowForm(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Student
-            </Button>
-          )}
-        </div>
+        <Tabs defaultValue="students" className="w-full">
+          <TabsList className="mb-6">
+            <TabsTrigger value="students">
+              Students ({students.length})
+            </TabsTrigger>
+            <TabsTrigger value="submissions">
+              Pending Submissions ({submissions.length})
+            </TabsTrigger>
+          </TabsList>
 
-        {showForm ? (
-          <StudentForm
-            student={editingStudent}
-            onSuccess={handleFormSuccess}
-            onCancel={handleFormCancel}
-          />
-        ) : (
-          <StudentTable
-            students={students}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        )}
+          <TabsContent value="students">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">Manage Students</h2>
+                <p className="text-sm text-muted-foreground">
+                  Add, edit, or remove student profiles
+                </p>
+              </div>
+              {!showForm && (
+                <Button onClick={() => setShowForm(true)}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Student
+                </Button>
+              )}
+            </div>
+
+            {showForm ? (
+              <StudentForm
+                student={editingStudent}
+                onSuccess={handleFormSuccess}
+                onCancel={handleFormCancel}
+              />
+            ) : (
+              <StudentTable
+                students={students}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            )}
+          </TabsContent>
+
+          <TabsContent value="submissions">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground">Pending Submissions</h2>
+              <p className="text-sm text-muted-foreground">
+                Review and approve or reject student submissions
+              </p>
+            </div>
+
+            <SubmissionTable
+              submissions={submissions}
+              onApprove={handleApprove}
+              onReject={handleReject}
+            />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );

@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      student_submissions: {
+        Row: {
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          portfolio_link: string | null
+          profile_photo_url: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          specialization: string
+          status: Database["public"]["Enums"]["student_status"]
+          submission_status: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          name: string
+          portfolio_link?: string | null
+          profile_photo_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          specialization: string
+          status: Database["public"]["Enums"]["student_status"]
+          submission_status?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          name?: string
+          portfolio_link?: string | null
+          profile_photo_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          specialization?: string
+          status?: Database["public"]["Enums"]["student_status"]
+          submission_status?: string
+        }
+        Relationships: []
+      }
       students: {
         Row: {
           created_at: string | null

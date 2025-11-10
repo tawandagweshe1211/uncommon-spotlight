@@ -66,10 +66,17 @@ const Index = () => {
           <h1 className="mb-4 text-5xl font-bold tracking-tight md:text-6xl">
             Uncommon Student Showcase
           </h1>
-          <p className="mx-auto max-w-2xl text-lg text-primary-foreground/90 md:text-xl">
+          <p className="mx-auto max-w-2xl text-lg text-primary-foreground/90 md:text-xl mb-8">
             Discover talented students from the Uncommon program. Browse their specializations, 
             view portfolios, and connect with the next generation of professionals.
           </p>
+          <Button 
+            size="lg" 
+            className="bg-accent hover:bg-accent/90 text-accent-foreground"
+            onClick={() => window.location.href = '/submit'}
+          >
+            Submit Your Profile
+          </Button>
         </div>
       </section>
 
