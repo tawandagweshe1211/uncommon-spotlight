@@ -14,51 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      student_submissions: {
-        Row: {
-          created_at: string
-          description: string
-          email: string
-          id: string
-          name: string
-          portfolio_link: string | null
-          profile_photo_url: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          specialization: string
-          status: Database["public"]["Enums"]["student_status"]
-          submission_status: string
-        }
-        Insert: {
-          created_at?: string
-          description: string
-          email: string
-          id?: string
-          name: string
-          portfolio_link?: string | null
-          profile_photo_url?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          specialization: string
-          status: Database["public"]["Enums"]["student_status"]
-          submission_status?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string
-          email?: string
-          id?: string
-          name?: string
-          portfolio_link?: string | null
-          profile_photo_url?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          specialization?: string
-          status?: Database["public"]["Enums"]["student_status"]
-          submission_status?: string
-        }
-        Relationships: []
-      }
       students: {
         Row: {
           created_at: string | null
@@ -70,6 +25,7 @@ export type Database = {
           specialization: string
           status: Database["public"]["Enums"]["student_status"]
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
@@ -81,6 +37,7 @@ export type Database = {
           specialization: string
           status: Database["public"]["Enums"]["student_status"]
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
@@ -92,24 +49,7 @@ export type Database = {
           specialization?: string
           status?: Database["public"]["Enums"]["student_status"]
           updated_at?: string | null
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -118,16 +58,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      app_role: "admin" | "user"
       student_status: "employed" | "internship" | "looking"
     }
     CompositeTypes: {
@@ -256,7 +189,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
       student_status: ["employed", "internship", "looking"],
     },
   },

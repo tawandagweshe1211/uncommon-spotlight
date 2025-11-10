@@ -70,13 +70,23 @@ const Index = () => {
             Discover talented students from the Uncommon program. Browse their specializations, 
             view portfolios, and connect with the next generation of professionals.
           </p>
-          <Button 
-            size="lg" 
-            className="bg-accent hover:bg-accent/90 text-accent-foreground"
-            onClick={() => window.location.href = '/submit'}
-          >
-            Submit Your Profile
-          </Button>
+          <div className="flex gap-4 justify-center">
+            <Button 
+              size="lg" 
+              className="bg-accent hover:bg-accent/90 text-accent-foreground"
+              onClick={() => window.location.href = '/auth'}
+            >
+              Create Your Profile
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20"
+              onClick={() => window.location.href = '/profile'}
+            >
+              Manage Profile
+            </Button>
+          </div>
         </div>
       </section>
 
