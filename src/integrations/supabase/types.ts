@@ -18,8 +18,10 @@ export type Database = {
         Row: {
           created_at: string | null
           description: string
+          email: string | null
           id: string
           name: string
+          phone_number: string | null
           portfolio_link: string | null
           profile_photo_url: string | null
           specialization: string
@@ -30,8 +32,10 @@ export type Database = {
         Insert: {
           created_at?: string | null
           description: string
+          email?: string | null
           id?: string
           name: string
+          phone_number?: string | null
           portfolio_link?: string | null
           profile_photo_url?: string | null
           specialization: string
@@ -42,8 +46,10 @@ export type Database = {
         Update: {
           created_at?: string | null
           description?: string
+          email?: string | null
           id?: string
           name?: string
+          phone_number?: string | null
           portfolio_link?: string | null
           profile_photo_url?: string | null
           specialization?: string

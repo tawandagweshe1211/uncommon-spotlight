@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ExternalLink, Briefcase, GraduationCap, Search } from "lucide-react";
+import { ExternalLink, Briefcase, GraduationCap, Search, Mail, Phone } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type StudentStatus = "employed" | "internship" | "looking";
@@ -17,6 +17,8 @@ interface Student {
   description: string;
   portfolio_link: string | null;
   profile_photo_url: string | null;
+  email: string | null;
+  phone_number: string | null;
 }
 
 const Index = () => {
@@ -160,7 +162,39 @@ const Index = () => {
                       {student.description}
                     </p>
 
-                    {student.portfolio_link && (
+                    {(student.email || student.phone_number) && (
+                      <div className="flex flex-wrap gap-2 mb-4 text-xs text-muted-foreground">
+                        {student.email && (
+                          <div className="flex items-center gap-1">
+                            <Mail className="h-3 w-3" />
+                            <span>{student.email}</span>
+                          </div>
+                        )}
+                        {student.phone_number && (
+                          <div className="flex items-center gap-1">
+                            <Phone className="h-3 w-3" />
+                            <span>{student.phone_number}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {student.status === "looking" && student.portfolio_link ? (
+                      <Button
+                        size="sm"
+                        className="w-full"
+                        asChild
+                      >
+                        <a
+                          href={student.portfolio_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Briefcase className="mr-2 h-4 w-4" />
+                          Hire Me
+                        </a>
+                      </Button>
+                    ) : student.portfolio_link ? (
                       <Button
                         variant="outline"
                         size="sm"
@@ -176,7 +210,7 @@ const Index = () => {
                           View Portfolio
                         </a>
                       </Button>
-                    )}
+                    ) : null}
                   </CardContent>
                 </Card>
               );

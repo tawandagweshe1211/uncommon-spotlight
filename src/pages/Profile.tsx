@@ -19,6 +19,8 @@ interface StudentProfile {
   description: string;
   portfolio_link: string;
   profile_photo_url: string;
+  email: string;
+  phone_number: string;
 }
 
 const Profile = () => {
@@ -35,6 +37,8 @@ const Profile = () => {
     description: "",
     portfolio_link: "",
     profile_photo_url: "",
+    email: "",
+    phone_number: "",
   });
 
   useEffect(() => {
@@ -82,6 +86,8 @@ const Profile = () => {
           description: data.description,
           portfolio_link: data.portfolio_link || "",
           profile_photo_url: data.profile_photo_url || "",
+          email: data.email || "",
+          phone_number: data.phone_number || "",
         });
       }
     } catch (error) {
@@ -106,6 +112,8 @@ const Profile = () => {
         description: profile.description,
         portfolio_link: profile.portfolio_link || null,
         profile_photo_url: profile.profile_photo_url || null,
+        email: profile.email || null,
+        phone_number: profile.phone_number || null,
       };
 
       if (hasProfile && profile.id) {
@@ -171,6 +179,8 @@ const Profile = () => {
         description: "",
         portfolio_link: "",
         profile_photo_url: "",
+        email: "",
+        phone_number: "",
       });
     } catch (error: any) {
       toast({
@@ -291,6 +301,28 @@ const Profile = () => {
                   value={profile.portfolio_link}
                   onChange={(e) => setProfile({ ...profile, portfolio_link: e.target.value })}
                   placeholder="https://yourportfolio.com"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={profile.email}
+                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                  placeholder="your.email@example.com"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone_number">Phone Number</Label>
+                <Input
+                  id="phone_number"
+                  type="tel"
+                  value={profile.phone_number}
+                  onChange={(e) => setProfile({ ...profile, phone_number: e.target.value })}
+                  placeholder="+1234567890"
                 />
               </div>
 
