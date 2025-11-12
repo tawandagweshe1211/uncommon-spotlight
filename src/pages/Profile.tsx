@@ -288,17 +288,17 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card">
+      <header className="border-b border-border bg-card animate-fade-in">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <div>
             <h1 className="text-2xl font-bold text-foreground">My Profile</h1>
             <p className="text-sm text-muted-foreground">{session?.user?.email}</p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => navigate("/")}>
+            <Button variant="outline" onClick={() => navigate("/")} className="transition-all duration-200 hover:scale-105">
               View Showcase
             </Button>
-            <Button variant="outline" onClick={handleSignOut}>
+            <Button variant="outline" onClick={handleSignOut} className="transition-all duration-200 hover:scale-105">
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out
             </Button>
@@ -306,8 +306,8 @@ const Profile = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-3xl">
-        <Card>
+      <main className="container mx-auto px-4 py-8 max-w-3xl animate-slide-up">
+        <Card className="transition-shadow duration-300 hover:shadow-lg">
           <CardHeader>
             <CardTitle>
               {hasProfile ? "Edit Your Profile" : "Create Your Profile"}
@@ -364,7 +364,7 @@ const Profile = () => {
               <div className="space-y-2">
                 <Label>Profile Picture</Label>
                 <div className="flex items-start gap-4">
-                  <Avatar className="h-24 w-24 border-2 border-border">
+                  <Avatar className="h-24 w-24 border-2 border-border transition-transform duration-300 hover:scale-110">
                     <AvatarImage src={previewUrl || undefined} />
                     <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
                       {profile.name
@@ -391,6 +391,7 @@ const Profile = () => {
                         size="sm"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
+                        className="transition-all duration-200 hover:scale-105"
                       >
                         <Upload className="mr-2 h-4 w-4" />
                         {uploading ? "Uploading..." : "Upload Photo"}
@@ -401,6 +402,7 @@ const Profile = () => {
                           variant="outline"
                           size="sm"
                           onClick={handleRemovePhoto}
+                          className="transition-all duration-200 hover:scale-105"
                         >
                           <X className="mr-2 h-4 w-4" />
                           Remove
@@ -460,7 +462,7 @@ const Profile = () => {
               </div>
 
               <div className="flex gap-3">
-                <Button type="submit" className="flex-1" disabled={saving}>
+                <Button type="submit" className="flex-1 transition-all duration-300 hover:scale-105 hover:shadow-lg" disabled={saving}>
                   <Save className="mr-2 h-4 w-4" />
                   {saving ? "Saving..." : hasProfile ? "Update Profile" : "Create Profile"}
                 </Button>
@@ -469,6 +471,7 @@ const Profile = () => {
                     type="button"
                     variant="destructive"
                     onClick={handleDelete}
+                    className="transition-all duration-300 hover:scale-105 hover:shadow-lg"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete

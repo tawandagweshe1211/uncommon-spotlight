@@ -64,7 +64,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary to-primary/90 text-primary-foreground">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
-        <div className="container relative mx-auto px-4 py-20 text-center">
+        <div className="container relative mx-auto px-4 py-20 text-center animate-fade-in">
           <h1 className="mb-4 text-5xl font-bold tracking-tight md:text-6xl">
             Uncommon Student Showcase
           </h1>
@@ -75,7 +75,7 @@ const Index = () => {
           <div className="flex gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-accent hover:bg-accent/90 text-accent-foreground"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"
               onClick={() => window.location.href = '/auth'}
             >
               Create Your Profile
@@ -83,7 +83,7 @@ const Index = () => {
             <Button 
               size="lg" 
               variant="outline"
-              className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20"
+              className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-105 hover:shadow-lg"
               onClick={() => window.location.href = '/profile'}
             >
               Manage Profile
@@ -93,13 +93,13 @@ const Index = () => {
       </section>
 
       {/* Filter Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8 animate-slide-up">
         <Tabs value={filter} onValueChange={(v) => setFilter(v as StudentStatus | "all")} className="w-full">
           <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto">
-            <TabsTrigger value="all">All Students</TabsTrigger>
-            <TabsTrigger value="employed">Employed</TabsTrigger>
-            <TabsTrigger value="internship">Internship</TabsTrigger>
-            <TabsTrigger value="looking">Looking</TabsTrigger>
+            <TabsTrigger value="all" className="transition-all duration-200 hover:scale-105">All Students</TabsTrigger>
+            <TabsTrigger value="employed" className="transition-all duration-200 hover:scale-105">Employed</TabsTrigger>
+            <TabsTrigger value="internship" className="transition-all duration-200 hover:scale-105">Internship</TabsTrigger>
+            <TabsTrigger value="looking" className="transition-all duration-200 hover:scale-105">Looking</TabsTrigger>
           </TabsList>
         </Tabs>
       </section>
@@ -124,7 +124,7 @@ const Index = () => {
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredStudents.map((student) => {
+            {filteredStudents.map((student, index) => {
               const statusConfig = getStatusConfig(student.status);
               const StatusIcon = statusConfig.icon;
               const initials = student.name
@@ -135,23 +135,27 @@ const Index = () => {
                 .slice(0, 2);
 
               return (
-                <Card key={student.id} className="group overflow-hidden border-border hover:shadow-lg transition-all duration-300">
+                <Card 
+                  key={student.id} 
+                  className="group overflow-hidden border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-scale-in"
+                  style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'both' }}
+                >
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4 mb-4">
-                      <Avatar className="h-16 w-16 border-2 border-primary">
+                      <Avatar className="h-16 w-16 border-2 border-primary transition-transform duration-300 group-hover:scale-110">
                         <AvatarImage src={student.profile_photo_url || undefined} alt={student.name} />
                         <AvatarFallback className="bg-primary text-primary-foreground text-lg">
                           {initials}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-lg text-foreground mb-1 truncate">
+                        <h3 className="font-semibold text-lg text-foreground mb-1 truncate group-hover:text-primary transition-colors duration-200">
                           {student.name}
                         </h3>
                         <p className="text-sm text-muted-foreground mb-2">
                           {student.specialization}
                         </p>
-                        <Badge className={statusConfig.className}>
+                        <Badge className={`${statusConfig.className} transition-all duration-200 hover:scale-105`}>
                           <StatusIcon className="mr-1 h-3 w-3" />
                           {statusConfig.label}
                         </Badge>
@@ -165,13 +169,13 @@ const Index = () => {
                     {(student.email || student.phone_number) && (
                       <div className="flex flex-wrap gap-2 mb-4 text-xs text-muted-foreground">
                         {student.email && (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1 transition-colors duration-200 hover:text-foreground">
                             <Mail className="h-3 w-3" />
                             <span>{student.email}</span>
                           </div>
                         )}
                         {student.phone_number && (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1 transition-colors duration-200 hover:text-foreground">
                             <Phone className="h-3 w-3" />
                             <span>{student.phone_number}</span>
                           </div>
@@ -182,7 +186,7 @@ const Index = () => {
                     {student.status === "looking" && student.portfolio_link ? (
                       <Button
                         size="sm"
-                        className="w-full"
+                        className="w-full transition-all duration-300 hover:scale-105 hover:shadow-lg"
                         asChild
                       >
                         <a
@@ -198,7 +202,7 @@ const Index = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                        className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 hover:scale-105"
                         asChild
                       >
                         <a
