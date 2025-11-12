@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, Save, Trash2 } from "lucide-react";
+import { LogOut, Save, Trash2, Upload, X } from "lucide-react";
 import { Session } from "@supabase/supabase-js";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface StudentProfile {
   id?: string;
@@ -26,10 +27,13 @@ interface StudentProfile {
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [hasProfile, setHasProfile] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
   const [profile, setProfile] = useState<StudentProfile>({
     name: "",
     specialization: "",
@@ -89,6 +93,7 @@ const Profile = () => {
           email: data.email || "",
           phone_number: data.phone_number || "",
         });
+        setPreviewUrl(data.profile_photo_url || "");
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -191,6 +196,80 @@ const Profile = () => {
     }
   };
 
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !session) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file",
+        description: "Please select an image file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select an image smaller than 5MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      // Delete old profile picture if exists
+      if (profile.profile_photo_url) {
+        const oldPath = profile.profile_photo_url.split('/').slice(-2).join('/');
+        await supabase.storage.from('profile-pictures').remove([oldPath]);
+      }
+
+      // Upload new image
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('profile-pictures')
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('profile-pictures')
+        .getPublicUrl(fileName);
+
+      setProfile({ ...profile, profile_photo_url: publicUrl });
+      setPreviewUrl(publicUrl);
+
+      toast({
+        title: "Image uploaded",
+        description: "Don't forget to save your profile to keep the changes.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload image.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setProfile({ ...profile, profile_photo_url: "" });
+    setPreviewUrl("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/");
@@ -283,14 +362,56 @@ const Profile = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="profile_photo_url">Profile Photo URL</Label>
-                <Input
-                  id="profile_photo_url"
-                  type="url"
-                  value={profile.profile_photo_url}
-                  onChange={(e) => setProfile({ ...profile, profile_photo_url: e.target.value })}
-                  placeholder="https://example.com/photo.jpg"
-                />
+                <Label>Profile Picture</Label>
+                <div className="flex items-start gap-4">
+                  <Avatar className="h-24 w-24 border-2 border-border">
+                    <AvatarImage src={previewUrl || undefined} />
+                    <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
+                      {profile.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2) || "?"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 space-y-2">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                      id="profile-picture-input"
+                    />
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        {uploading ? "Uploading..." : "Upload Photo"}
+                      </Button>
+                      {previewUrl && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleRemovePhoto}
+                        >
+                          <X className="mr-2 h-4 w-4" />
+                          Remove
+                        </Button>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Upload a profile picture (max 5MB). Accepts JPG, PNG, or WEBP.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-2">
