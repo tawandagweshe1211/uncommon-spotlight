@@ -7,7 +7,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExternalLink, Briefcase, GraduationCap, Search, Mail, Phone, ChevronLeft, ChevronRight } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import logo from "@/assets/logo.png";
+import students1 from "@/assets/students-1.jpg";
+import students2 from "@/assets/students-2.jpg";
+import students3 from "@/assets/students-3.jpg";
+import students4 from "@/assets/students-4.jpg";
 
 type StudentStatus = "employed" | "internship" | "looking";
 
@@ -78,41 +83,61 @@ const Index = () => {
             Uncommon Student Showcase
           </h1>
           
-          {/* Carousel Slider */}
-          <div className="mx-auto max-w-4xl mb-8 animate-slide-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-            <Carousel className="w-full" opts={{ loop: true, align: "center" }}>
+          {/* Carousel Slider with Images */}
+          <div className="mx-auto max-w-5xl mb-8 animate-slide-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+            <Carousel 
+              className="w-full" 
+              opts={{ loop: true, align: "center" }}
+              plugins={[
+                Autoplay({
+                  delay: 4000,
+                })
+              ]}
+            >
               <CarouselContent>
                 <CarouselItem>
-                  <div className="p-8">
-                    <p className="text-xl md:text-2xl text-primary-foreground/95 font-medium">
-                      Discover talented students from the Uncommon program
-                    </p>
+                  <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                    <img src={students1} alt="Uncommon Students" className="w-full h-[400px] object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
+                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                        Discover talented students from the Uncommon program
+                      </p>
+                    </div>
                   </div>
                 </CarouselItem>
                 <CarouselItem>
-                  <div className="p-8">
-                    <p className="text-xl md:text-2xl text-primary-foreground/95 font-medium">
-                      Browse specializations and view amazing portfolios
-                    </p>
+                  <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                    <img src={students2} alt="Student Working" className="w-full h-[400px] object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
+                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                        Browse specializations and view amazing portfolios
+                      </p>
+                    </div>
                   </div>
                 </CarouselItem>
                 <CarouselItem>
-                  <div className="p-8">
-                    <p className="text-xl md:text-2xl text-primary-foreground/95 font-medium">
-                      Connect with the next generation of professionals
-                    </p>
+                  <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                    <img src={students3} alt="Students Collaborating" className="w-full h-[400px] object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
+                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                        Connect with the next generation of professionals
+                      </p>
+                    </div>
                   </div>
                 </CarouselItem>
                 <CarouselItem>
-                  <div className="p-8">
-                    <p className="text-xl md:text-2xl text-primary-foreground/95 font-medium">
-                      Find your perfect team member or mentor today
-                    </p>
+                  <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+                    <img src={students4} alt="Student Presenting" className="w-full h-[400px] object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
+                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                        Find your perfect team member or mentor today
+                      </p>
+                    </div>
                   </div>
                 </CarouselItem>
               </CarouselContent>
-              <CarouselPrevious className="hidden md:flex bg-primary-foreground/10 border-primary-foreground/20 hover:bg-primary-foreground/20 text-primary-foreground" />
-              <CarouselNext className="hidden md:flex bg-primary-foreground/10 border-primary-foreground/20 hover:bg-primary-foreground/20 text-primary-foreground" />
+              <CarouselPrevious className="hidden md:flex bg-primary-foreground/10 border-primary-foreground/20 hover:bg-primary-foreground/20 text-primary-foreground transition-all duration-300 hover:scale-110" />
+              <CarouselNext className="hidden md:flex bg-primary-foreground/10 border-primary-foreground/20 hover:bg-primary-foreground/20 text-primary-foreground transition-all duration-300 hover:scale-110" />
             </Carousel>
           </div>
 
