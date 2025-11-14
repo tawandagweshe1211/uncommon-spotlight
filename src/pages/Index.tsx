@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,9 @@ const Index = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [filter, setFilter] = useState<StudentStatus | "all">("all");
   const [loading, setLoading] = useState(true);
+  const plugin = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
 
   useEffect(() => {
     fetchStudents();
@@ -88,11 +91,7 @@ const Index = () => {
             <Carousel 
               className="w-full" 
               opts={{ loop: true, align: "center" }}
-              plugins={[
-                Autoplay({
-                  delay: 4000,
-                })
-              ]}
+              plugins={[plugin.current]}
             >
               <CarouselContent>
                 <CarouselItem>
