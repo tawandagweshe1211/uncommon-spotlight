@@ -83,7 +83,7 @@ const Index = () => {
         <div className="container relative mx-auto px-4 py-20 text-center">
           {/* Main Heading with enhanced animation */}
           <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl animate-fade-in opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-            Uncommon Student Showcase
+            uncommon.org students website
           </h1>
           
           {/* Carousel Slider with Images */}
