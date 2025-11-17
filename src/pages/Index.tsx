@@ -96,9 +96,9 @@ const Index = () => {
               <CarouselContent>
                 <CarouselItem>
                   <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                    <img src={students1} alt="Uncommon Students" className="w-full h-[400px] object-cover" />
+                    <img src={students1} alt="Uncommon Students" className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center" />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
-                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                      <p className="p-4 sm:p-8 text-lg sm:text-2xl md:text-3xl text-primary-foreground font-bold">
                         Discover talented students from the Uncommon program
                       </p>
                     </div>
@@ -106,9 +106,9 @@ const Index = () => {
                 </CarouselItem>
                 <CarouselItem>
                   <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                    <img src={students2} alt="Student Working" className="w-full h-[400px] object-cover" />
+                    <img src={students2} alt="Student Working" className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center" />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
-                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                      <p className="p-4 sm:p-8 text-lg sm:text-2xl md:text-3xl text-primary-foreground font-bold">
                         Browse specializations and view amazing portfolios
                       </p>
                     </div>
@@ -116,9 +116,9 @@ const Index = () => {
                 </CarouselItem>
                 <CarouselItem>
                   <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                    <img src={students3} alt="Students Collaborating" className="w-full h-[400px] object-cover" />
+                    <img src={students3} alt="Students Collaborating" className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center" />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
-                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                      <p className="p-4 sm:p-8 text-lg sm:text-2xl md:text-3xl text-primary-foreground font-bold">
                         Connect with the next generation of professionals
                       </p>
                     </div>
@@ -126,9 +126,9 @@ const Index = () => {
                 </CarouselItem>
                 <CarouselItem>
                   <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-                    <img src={students4} alt="Student Presenting" className="w-full h-[400px] object-cover" />
+                    <img src={students4} alt="Student Presenting" className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover object-center" />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex items-end">
-                      <p className="p-8 text-2xl md:text-3xl text-primary-foreground font-bold">
+                      <p className="p-4 sm:p-8 text-lg sm:text-2xl md:text-3xl text-primary-foreground font-bold">
                         Find your perfect team member or mentor today
                       </p>
                     </div>
