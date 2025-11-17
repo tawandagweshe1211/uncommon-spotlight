@@ -76,13 +76,13 @@ const Index = () => {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20 animate-pulse"></div>
         
         {/* Floating Logo */}
-        <div className="absolute top-8 left-8 animate-bounce">
-          <img src={logo} alt="Uncommon Logo" className="h-16 w-16 md:h-20 md:w-20 drop-shadow-2xl" />
+        <div className="absolute top-4 left-4 sm:top-8 sm:left-8 animate-bounce">
+          <img src={logo} alt="Uncommon Logo" className="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 drop-shadow-2xl" />
         </div>
 
         <div className="container relative mx-auto px-4 py-20 text-center">
           {/* Main Heading with enhanced animation */}
-          <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl animate-fade-in opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+          <h1 className="mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight animate-fade-in opacity-0 px-4" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
             uncommon.org students website
           </h1>
           
@@ -140,10 +140,10 @@ const Index = () => {
             </Carousel>
           </div>
 
-          <div className="flex gap-4 justify-center animate-scale-in opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in opacity-0 px-4" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
             <Button 
               size="lg" 
-              className="bg-accent hover:bg-accent/90 text-accent-foreground transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:rotate-1"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:rotate-1 w-full sm:w-auto"
               onClick={() => window.location.href = '/auth'}
             >
               Create Your Profile
@@ -151,7 +151,7 @@ const Index = () => {
             <Button 
               size="lg" 
               variant="outline"
-              className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:-rotate-1"
+              className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:-rotate-1 w-full sm:w-auto"
               onClick={() => window.location.href = '/profile'}
             >
               Manage Profile
@@ -163,11 +163,11 @@ const Index = () => {
       {/* Filter Section */}
       <section className="container mx-auto px-4 py-8 animate-slide-up opacity-0" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
         <Tabs value={filter} onValueChange={(v) => setFilter(v as StudentStatus | "all")} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto shadow-lg">
-            <TabsTrigger value="all" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1">All Students</TabsTrigger>
-            <TabsTrigger value="employed" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1">Employed</TabsTrigger>
-            <TabsTrigger value="internship" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1">Internship</TabsTrigger>
-            <TabsTrigger value="looking" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1">Looking</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 max-w-2xl mx-auto shadow-lg gap-2 p-2">
+            <TabsTrigger value="all" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1 text-sm sm:text-base">All Students</TabsTrigger>
+            <TabsTrigger value="employed" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1 text-sm sm:text-base">Employed</TabsTrigger>
+            <TabsTrigger value="internship" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1 text-sm sm:text-base">Internship</TabsTrigger>
+            <TabsTrigger value="looking" className="transition-all duration-300 hover:scale-110 hover:-translate-y-1 text-sm sm:text-base">Looking</TabsTrigger>
           </TabsList>
         </Tabs>
       </section>
