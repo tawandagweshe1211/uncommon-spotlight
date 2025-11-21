@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ExternalLink, Briefcase, GraduationCap, Search, Mail, Phone, ChevronLeft, ChevronRight } from "lucide-react";
+import { ExternalLink, Briefcase, GraduationCap, Search, Mail, Phone, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
@@ -32,9 +32,22 @@ const Index = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [filter, setFilter] = useState<StudentStatus | "all">("all");
   const [loading, setLoading] = useState(true);
+  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(new Set());
   const plugin = useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
+
+  const toggleDescription = (studentId: string) => {
+    setExpandedDescriptions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(studentId)) {
+        newSet.delete(studentId);
+      } else {
+        newSet.add(studentId);
+      }
+      return newSet;
+    });
+  };
 
   useEffect(() => {
     fetchStudents();
@@ -273,9 +286,26 @@ const Index = () => {
                       </div>
                     </div>
 
-                    <p className="text-sm text-foreground/70 mb-4 line-clamp-3 relative z-10 leading-relaxed text-center">
-                      {student.description}
-                    </p>
+                    <div className="relative z-10 mb-4">
+                      <p className={`text-sm text-foreground/70 leading-relaxed text-center transition-all duration-300 ${
+                        expandedDescriptions.has(student.id) ? '' : 'line-clamp-3'
+                      }`}>
+                        {student.description}
+                      </p>
+                      {student.description.length > 150 && (
+                        <button
+                          onClick={() => toggleDescription(student.id)}
+                          className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 font-medium mt-2 mx-auto transition-all duration-300 hover:gap-2"
+                        >
+                          {expandedDescriptions.has(student.id) ? 'Read less' : 'Read more'}
+                          <ChevronDown 
+                            className={`h-3.5 w-3.5 transition-transform duration-300 ${
+                              expandedDescriptions.has(student.id) ? 'rotate-180' : ''
+                            }`} 
+                          />
+                        </button>
+                      )}
+                    </div>
 
                     {(student.email || student.phone_number) && (
                       <div className="flex flex-col gap-2 mb-4 text-xs relative z-10 bg-muted/30 rounded-xl p-3">
